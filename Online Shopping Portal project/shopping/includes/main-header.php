@@ -146,7 +146,7 @@ if(!empty($_SESSION['cart'])){
 				<div class="cart-item product-summary">
 					<div class="row">
 						<div class="col-xs-12">
-							Your Shopping Cart is Empty.
+							Your Cart is Empty.
 						</div>
 						
 						
