@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 15, 2018 at 03:37 PM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
+-- Host: 127.0.0.1:3306
+-- Generation Time: Nov 08, 2020 at 02:20 PM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,13 +28,15 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
-CREATE TABLE `admin` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updationDate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updationDate` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
@@ -49,23 +51,24 @@ INSERT INTO `admin` (`id`, `username`, `password`, `creationDate`, `updationDate
 -- Table structure for table `category`
 --
 
-CREATE TABLE `category` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `categoryName` varchar(255) DEFAULT NULL,
-  `categoryDescription` longtext,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updationDate` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `categoryDescription` longtext DEFAULT NULL,
+  `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updationDate` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category`
 --
 
 INSERT INTO `category` (`id`, `categoryName`, `categoryDescription`, `creationDate`, `updationDate`) VALUES
-(3, 'Books', 'Test anuj', '2017-01-24 19:17:37', '30-01-2017 12:22:24 AM'),
-(4, 'Electronics', 'Electronic Products', '2017-01-24 19:19:32', ''),
-(5, 'Furniture', 'test', '2017-01-24 19:19:54', ''),
-(6, 'Fashion', 'Fashion', '2017-02-20 19:18:52', '');
+(7, 'Medicines', 'All kinds of medicines.', '2020-10-30 08:59:25', NULL),
+(8, 'Medical Equipments', 'Various equipment and devices for medical use are available.', '2020-10-30 09:01:18', NULL),
+(9, 'Health Care', 'All other health and well being related products.', '2020-10-30 09:02:02', NULL);
 
 -- --------------------------------------------------------
 
@@ -73,26 +76,28 @@ INSERT INTO `category` (`id`, `categoryName`, `categoryDescription`, `creationDa
 -- Table structure for table `orders`
 --
 
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) DEFAULT NULL,
   `productId` varchar(255) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
-  `orderDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `orderDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `paymentMethod` varchar(50) DEFAULT NULL,
-  `orderStatus` varchar(55) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `orderStatus` varchar(55) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`id`, `userId`, `productId`, `quantity`, `orderDate`, `paymentMethod`, `orderStatus`) VALUES
-(1, 1, '3', 1, '2017-03-07 19:32:57', 'COD', NULL),
-(3, 1, '4', 1, '2017-03-10 19:43:04', 'Debit / Credit card', 'Delivered'),
-(4, 1, '17', 1, '2017-03-08 16:14:17', 'COD', 'in Process'),
-(5, 1, '3', 1, '2017-03-08 19:21:38', 'COD', NULL),
-(6, 1, '4', 1, '2017-03-08 19:21:38', 'COD', NULL);
+(13, 1, '24', 1, '2020-11-02 10:38:47', 'COD', NULL),
+(14, 1, '26', 1, '2020-11-02 10:38:47', 'COD', NULL),
+(16, 1, '26', 1, '2020-11-02 14:01:27', NULL, NULL),
+(17, 1, '26', 1, '2020-11-02 14:22:44', NULL, NULL),
+(18, 1, '28', 1, '2020-11-02 14:22:44', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -100,23 +105,15 @@ INSERT INTO `orders` (`id`, `userId`, `productId`, `quantity`, `orderDate`, `pay
 -- Table structure for table `ordertrackhistory`
 --
 
-CREATE TABLE `ordertrackhistory` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `ordertrackhistory`;
+CREATE TABLE IF NOT EXISTS `ordertrackhistory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `orderId` int(11) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
-  `remark` mediumtext,
-  `postingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ordertrackhistory`
---
-
-INSERT INTO `ordertrackhistory` (`id`, `orderId`, `status`, `remark`, `postingDate`) VALUES
-(1, 3, 'in Process', 'Order has been Shipped.', '2017-03-10 19:36:45'),
-(2, 1, 'Delivered', 'Order Has been delivered', '2017-03-10 19:37:31'),
-(3, 3, 'Delivered', 'Product delivered successfully', '2017-03-10 19:43:04'),
-(4, 4, 'in Process', 'Product ready for Shipping', '2017-03-10 19:50:36');
+  `remark` mediumtext DEFAULT NULL,
+  `postingDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -124,26 +121,19 @@ INSERT INTO `ordertrackhistory` (`id`, `orderId`, `status`, `remark`, `postingDa
 -- Table structure for table `productreviews`
 --
 
-CREATE TABLE `productreviews` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `productreviews`;
+CREATE TABLE IF NOT EXISTS `productreviews` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `productId` int(11) DEFAULT NULL,
   `quality` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
   `value` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `summary` varchar(255) DEFAULT NULL,
-  `review` longtext,
-  `reviewDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `productreviews`
---
-
-INSERT INTO `productreviews` (`id`, `productId`, `quality`, `price`, `value`, `name`, `summary`, `review`, `reviewDate`) VALUES
-(2, 3, 4, 5, 5, 'Anuj Kumar', 'BEST PRODUCT FOR ME :)', 'BEST PRODUCT FOR ME :)', '2017-02-26 20:43:57'),
-(3, 3, 3, 4, 3, 'Sarita pandey', 'Nice Product', 'Value for money', '2017-02-26 20:52:46'),
-(4, 3, 3, 4, 3, 'Sarita pandey', 'Nice Product', 'Value for money', '2017-02-26 20:59:19');
+  `review` longtext DEFAULT NULL,
+  `reviewDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -151,48 +141,74 @@ INSERT INTO `productreviews` (`id`, `productId`, `quality`, `price`, `value`, `n
 -- Table structure for table `products`
 --
 
-CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `category` int(11) NOT NULL,
   `subCategory` int(11) DEFAULT NULL,
   `productName` varchar(255) DEFAULT NULL,
   `productCompany` varchar(255) DEFAULT NULL,
   `productPrice` int(11) DEFAULT NULL,
   `productPriceBeforeDiscount` int(11) DEFAULT NULL,
-  `productDescription` longtext,
+  `productDescription` longtext DEFAULT NULL,
   `productImage1` varchar(255) DEFAULT NULL,
   `productImage2` varchar(255) DEFAULT NULL,
   `productImage3` varchar(255) DEFAULT NULL,
   `shippingCharge` int(11) DEFAULT NULL,
   `productAvailability` varchar(255) DEFAULT NULL,
-  `postingDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updationDate` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `postingDate` timestamp NULL DEFAULT current_timestamp(),
+  `updationDate` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`id`, `category`, `subCategory`, `productName`, `productCompany`, `productPrice`, `productPriceBeforeDiscount`, `productDescription`, `productImage1`, `productImage2`, `productImage3`, `shippingCharge`, `productAvailability`, `postingDate`, `updationDate`) VALUES
-(1, 4, 3, 'Micromax 81cm (32) HD Ready LED TV  (32T6175MHD, 2 x HDMI, 2 x USB)', 'Micromax test', 139900, 0, '<div class=\"HoUsOy\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; font-size: 18px; white-space: nowrap; line-height: 1.4; color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif;\">General</div><ul style=\"box-sizing: border-box; margin-bottom: 0px; margin-left: 0px; color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 14px;\"><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\">Sales Package</div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\">1 TV Unit, Remote Controller, Battery (For Remote Controller), Quick Installation Guide and User Manual: All in One, Wall Mount Support</li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\">Model Name</div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\">32T6175MHD</li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\">Display Size</div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\">81 cm (32)</li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\">Screen Type</div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\">LED</li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\">HD Technology &amp; Resolutiontest</div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\">HD Ready, 1366 x 768</li></ul></li></ul>', 'micromax1.jpeg', 'micromax main image.jpg', 'micromax main image.jpg', 1200, 'In Stock', '2017-01-30 16:54:35', ''),
-(2, 4, 4, 'Apple iPhone 6 (Silver, 16 GB)', 'Apple INC', 36990, 0, '<div class=\"_2PF8IO\" style=\"box-sizing: border-box; margin: 0px 0px 0px 110px; padding: 0px; flex: 1 1 0%; color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 14px;\"><ul style=\"box-sizing: border-box; margin-bottom: 0px; margin-left: 0px;\"><li class=\"_1tMfkh\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 8px 16px; list-style: none; position: relative;\">1 GB RAM | 16 GB ROM |</li><li class=\"_1tMfkh\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 8px 16px; list-style: none; position: relative;\">4.7 inch Retina HD Display</li><li class=\"_1tMfkh\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 8px 16px; list-style: none; position: relative;\">8MP Primary Camera | 1.2MP Front</li><li class=\"_1tMfkh\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 8px 16px; list-style: none; position: relative;\">Li-Ion Battery</li><li class=\"_1tMfkh\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 8px 16px; list-style: none; position: relative;\">A8 Chip with 64-bit Architecture and M8 Motion Co-processor Processor</li></ul></div>', 'apple-iphone-6-1.jpeg', 'apple-iphone-6-2.jpeg', 'apple-iphone-6-3.jpeg', 0, 'In Stock', '2017-01-30 16:59:00', ''),
-(3, 4, 4, 'Redmi Note 4 (Gold, 32 GB)  (With 3 GB RAM)', 'Redmi', 10999, 0, '<br><div><ol><li>3 GB RAM | 32 GB ROM | Expandable Upto 128 GB<br></li><li>5.5 inch Full HD Display<br></li><li>13MP Primary Camera | 5MP Front<br></li><li>4100 mAh Li-Polymer Battery<br></li><li>Qualcomm Snapdragon 625 64-bit Processor<br></li></ol></div>', 'mi-redmi-note-4-1.jpeg', 'mi-redmi-note-4-2.jpeg', 'mi-redmi-note-4-3.jpeg', 0, 'In Stock', '2017-02-04 04:03:15', ''),
-(4, 4, 4, 'Lenovo K6 Power (Silver, 32 GB) ', 'Lenovo', 9999, 0, '<ul><li>3 GB RAM | 32 GB ROM | Expandable Upto 128 GB<br></li><li>5 inch Full HD Display<br></li><li>13MP Primary Camera | 8MP Front<br></li><li>4000 mAh Li-Polymer Battery<br></li><li>Qualcomm Snapdragon 430 Processor<br></li></ul>', 'lenovo-k6-power-k33a42-1.jpeg', 'lenovo-k6-power-k33a42-2.jpeg', 'lenovo-k6-power-k33a42-3.jpeg', 45, 'In Stock', '2017-02-04 04:04:43', ''),
-(5, 4, 4, 'Lenovo Vibe K5 Note (Gold, 32 GB)  ', 'Lenovo', 11999, 0, '<ul><li>3 GB RAM | 32 GB ROM | Expandable Upto 128 GB<br></li><li>5.5 inch Full HD Display<br></li><li>13MP Primary Camera | 8MP Front<br></li><li>3500 mAh Li-Ion Polymer Battery<br></li><li>Helio P10 64-bit Processor<br></li></ul>', 'lenovo-k5-note-pa330010in-1.jpeg', 'lenovo-k5-note-pa330116in-2.jpeg', 'lenovo-k5-note-pa330116in-3.jpeg', 0, 'In Stock', '2017-02-04 04:06:17', ''),
-(6, 4, 4, 'Micromax Canvas Mega 4G', 'Micromax', 6999, 0, '<ul><li>3 GB RAM | 16 GB ROM |<br></li><li>5.5 inch HD Display<br></li><li>13MP Primary Camera | 5MP Front<br></li><li>2500 mAh Battery<br></li><li>MT6735 Processor<br></li></ul>', 'micromax-canvas-mega-4g-1.jpeg', 'micromax-canvas-mega-4g-2.jpeg', 'micromax-canvas-mega-4g-3.jpeg', 35, 'In Stock', '2017-02-04 04:08:07', ''),
-(7, 4, 4, 'SAMSUNG Galaxy On5', 'SAMSUNG', 7490, 0, '<ul><li>1.5 GB RAM | 8 GB ROM | Expandable Upto 128 GB<br></li><li>5 inch HD Display<br></li><li>8MP Primary Camera | 5MP Front<br></li><li>2600 mAh Li-Ion Battery<br></li><li>Exynos 3475 Processor<br></li></ul>', 'samsung-galaxy-on7-sm-1.jpeg', 'samsung-galaxy-on5-sm-2.jpeg', 'samsung-galaxy-on5-sm-3.jpeg', 20, 'In Stock', '2017-02-04 04:10:17', ''),
-(8, 4, 4, 'OPPO A57', 'OPPO', 14990, 0, '<ul><li>3 GB RAM | 32 GB ROM | Expandable Upto 256 GB<br></li><li>5.2 inch HD Display<br></li><li>13MP Primary Camera | 16MP Front<br></li><li>2900 mAh Battery<br></li><li>Qualcomm MSM8940 64-bit Processor<br></li></ul>', 'oppo-a57-na-original-1.jpeg', 'oppo-a57-na-original-2.jpeg', 'oppo-a57-na-original-3.jpeg', 0, 'In Stock', '2017-02-04 04:11:54', ''),
-(9, 4, 5, 'Affix Back Cover for Mi Redmi Note 4', 'Techguru', 259, 0, '<ul><li>Suitable For: Mobile<br></li><li>Material: Polyurethane<br></li><li>Theme: No Theme<br></li><li>Type: Back Cover<br></li><li>Waterproof<br></li></ul>', 'amzer-amz98947-original-1.jpeg', 'amzer-amz98947-original-2.jpeg', 'amzer-amz98947-original-3.jpeg', 10, 'In Stock', '2017-02-04 04:17:03', ''),
-(11, 4, 6, 'Acer ES 15 Pentium Quad Core', 'Acer', 19990, 0, '<ul><li>Intel Pentium Quad Core Processor ( )<br></li><li>4 GB DDR3 RAM<br></li><li>Linux/Ubuntu Operating System<br></li><li>1 TB HDD<br></li><li>15.6 inch Display<br></li></ul>', 'acer-aspire-notebook-original-1.jpeg', 'acer-aspire-notebook-original-2.jpeg', 'acer-aspire-notebook-original-3.jpeg', 0, 'In Stock', '2017-02-04 04:26:17', ''),
-(12, 4, 6, 'Micromax Canvas Laptab II (WIFI) Atom 4th Gen', 'Micromax', 10999, 0, '<ul><li>Intel Atom Processor ( 4th Gen )<br></li><li>2 GB DDR3 RAM<br></li><li>32 bit Windows 10 Operating System<br></li><li>11.6 inch Touchscreen Display<br></li></ul>', 'micromax-lt777w-2-in-1-laptop-original-1.jpeg', 'micromax-lt777w-2-in-1-laptop-original-2.jpeg', 'micromax-lt777w-2-in-1-laptop-original-3.jpeg', 0, 'In Stock', '2017-02-04 04:28:17', ''),
-(13, 4, 6, 'HP Core i5 5th Gen', 'HP', 41990, 0, '<span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">HP Core i5 5th Gen - (4 GB/1 TB HDD/Windows 10 Home/2 GB Graphics) N8M28PA 15-ac123tx Notebook</span><span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">&nbsp;&nbsp;(15.6 inch, Turbo SIlver, 2.19 kg)</span><br><div><ul><li>Intel Core i5 Processor ( 5th Gen )<br></li><li>4 GB DDR3 RAM<br></li><li>64 bit Windows 10 Operating System<br></li><li>1 TB HDD<br></li><li>15.6 inch Display<br></li></ul></div>', 'hp-notebook-original-1.jpeg', 'hp-notebook-original-2.jpeg', 'hp-notebook-original-3.jpeg', 0, 'In Stock', '2017-02-04 04:30:24', ''),
-(14, 4, 6, 'Lenovo Ideapad 110 APU Quad Core A6 6th Gen', 'Lenovo', 22990, 0, '<span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">Lenovo Ideapad 110 APU Quad Core A6 6th Gen - (4 GB/500 GB HDD/Windows 10 Home) 80TJ00D2IH IP110 15ACL Notebook</span><span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">&nbsp;&nbsp;(15.6 inch, Black, 2.2 kg)</span><br><div><ul><li>AMD APU Quad Core A6 Processor ( 6th Gen )<br></li><li>4 GB DDR3 RAM<br></li><li>64 bit Windows 10 Operating System<br></li><li>500 GB HDD<br></li><li>15.6 inch Display<br></li></ul></div>', 'lenovo-ideapad-notebook-original-1.jpeg', 'lenovo-ideapad-notebook-original-2.jpeg', 'lenovo-ideapad-notebook-3.jpeg', 0, 'In Stock', '2017-02-04 04:32:15', ''),
-(15, 3, 8, 'The Wimpy Kid Do -It- Yourself Book', 'ABC', 205, 250, '<span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">The Wimpy Kid Do -It- Yourself Book</span><span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">&nbsp;&nbsp;(English, Paperback, Jeff Kinney)</span><br><div><ul><li>Language: English<br></li><li>Binding: Paperback<br></li><li>Publisher: Penguin Books Ltd<br></li><li>ISBN: 9780141339665, 0141339667<br></li><li>Edition: 1<br></li></ul></div>', 'diary-of-a-wimpy-kid-do-it-yourself-book-original-1.jpeg', 'diary-of-a-wimpy-kid-do-it-yourself-book-original-1.jpeg', 'diary-of-a-wimpy-kid-do-it-yourself-book-original-1.jpeg', 50, 'In Stock', '2017-02-04 04:35:13', ''),
-(16, 3, 8, 'Thea Stilton and the Tropical Treasure ', 'XYZ', 240, 0, '<ul><li>Language: English<br></li><li>Binding: Paperback<br></li><li>Publisher: Scholastic<br></li><li>ISBN: 9789351032083, 9351032086<br></li><li>Edition: 2015<br></li><li>Pages: 176<br></li></ul>', '22-thea-stilton-and-the-tropical-treasure-original-1.jpeg', '22-thea-stilton-and-the-tropical-treasure-original-1.jpeg', '22-thea-stilton-and-the-tropical-treasure-original-1.jpeg', 30, 'In Stock', '2017-02-04 04:36:23', ''),
-(17, 5, 9, 'Induscraft Solid Wood King Bed With Storage', 'Induscraft', 32566, 0, '<span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">Induscraft Solid Wood King Bed With Storage</span><span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">&nbsp;&nbsp;(Finish Color - Honey Brown)</span><br><div><ul><li>Material Subtype: Rosewood (Sheesham)<br></li><li>W x H x D: 1850 mm x 875 mm x 2057.5 mm<br></li><li>Floor Clearance: 8 mm<br></li><li>Delivery Condition: Knock Down<br></li></ul></div>', 'inaf245-queen-rosewood-sheesham-induscraft-na-honey-brown-original-1.jpeg', 'inaf245-queen-rosewood-sheesham-induscraft-na-honey-brown-original-2.jpeg', 'inaf245-queen-rosewood-sheesham-induscraft-na-honey-brown-original-3.jpeg', 0, 'In Stock', '2017-02-04 04:40:37', ''),
-(18, 5, 10, 'Nilkamal Ursa Metal Queen Bed', 'Nilkamal', 6523, 0, '<span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">@home by Nilkamal Ursa Metal Queen Bed</span><span style=\"color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 18px;\">&nbsp;&nbsp;(Finish Color - NA)</span><br><div><ul><li>Material Subtype: Carbon Steel<br></li><li>W x H x D: 1590 mm x 910 mm x 2070 mm<br></li><li>Floor Clearance: 341 mm<br></li><li>Delivery Condition: Knock Down<br></li></ul></div>', 'flbdorsabrqbblk-queen-carbon-steel-home-by-nilkamal-na-na-original-1.jpeg', 'flbdorsabrqbblk-queen-carbon-steel-home-by-nilkamal-na-na-original-2.jpeg', 'flbdorsabrqbblk-queen-carbon-steel-home-by-nilkamal-na-na-original-3.jpeg', 0, 'In Stock', '2017-02-04 04:42:27', ''),
-(19, 6, 12, 'Asian Casuals  (White, White)', 'Asian', 379, 0, '<ul style=\"box-sizing: border-box; margin-bottom: 0px; margin-left: 0px; color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 14px;\"><li class=\"_2-riNZ\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 8px 16px; list-style: none; position: relative;\">Colour: White, White</li><li class=\"_2-riNZ\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 0px 16px; list-style: none; position: relative;\">Outer Material: Denim</li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\"><br></div></li></ul>', '1.jpeg', '2.jpeg', '3.jpeg', 45, 'In Stock', '2017-03-10 20:16:03', ''),
-(20, 6, 12, 'Adidas MESSI 16.3 TF Football turf Shoes  (Blue)', 'Adidas', 4129, 5000, '<ul style=\"box-sizing: border-box; margin-bottom: 0px; margin-left: 0px; color: rgb(33, 33, 33); font-family: Roboto, Arial, sans-serif; font-size: 14px;\"><li class=\"_2-riNZ\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 8px 16px; list-style: none; position: relative;\">Colour: Blue</li><li class=\"_2-riNZ\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 0px 16px; list-style: none; position: relative;\">Closure: Laced</li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\"><b>Weight</b></div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\"><b>200 g (per single Shoe) - Weight of the product may vary depending on size.</b></li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\"><b>Style</b></div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\"><b>Panel and Stitch Detail, Textured Detail</b></li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\"><b>Tip Shape</b></div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\"><b>Round</b></li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px 0px 16px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\"><b>Season</b></div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\"><b>AW16</b></li></ul></li><li class=\"_1KuY3T row\" style=\"box-sizing: border-box; margin: 0px; padding: 0px; list-style: none; display: flex; flex-flow: row wrap; width: 731px;\"><div class=\"vmXPri col col-3-12\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px 8px 0px 0px; width: 182.75px; display: inline-block; vertical-align: top; color: rgb(135, 135, 135);\"><b>Closure</b></div><ul class=\"_3dG3ix col col-9-12\" style=\"box-sizing: border-box; margin-left: 0px; width: 548.25px; display: inline-block; vertical-align: top; line-height: 1.4;\"><li class=\"sNqDog\" style=\"text-align: left; box-sizing: border-box; margin: 0px; padding: 0px; list-style: none;\"><b>Laced</b></li></ul></li></ul>', '1.jpeg', '2.jpeg', '3.jpeg', 0, 'In Stock', '2017-03-10 20:19:22', '');
+(23, 8, 20, 'Accu-Chek', 'Roche ', 1599, 1599, '<div class=\"ui-provider a b c d e f g h i j k l m n o p q r s t u v w x y z ab ac ae af ag ah ai aj ak\" dir=\"ltr\"><div style=\"\"><div class=\"ui-provider a b c d e f g h i j k l m n o p q r s t u v w x y z ab ac ae af ag ah ai aj ak\" dir=\"ltr\"><div style=\"font-family: &quot;Segoe UI&quot;, system-ui, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, sans-serif; font-size: 14px;\"><p style=\"margin-bottom: 0px;\"><font color=\"#000000\">Accu-Chek Active Blood Glucometer Kit (Box of 10 Test strips Free) is an easy to use system that comprises of powerful features like accurate blood glucose measurement, pre-and post-meal reminders, visual double check and two-button intuitive handling and is suitable for self-testing.<br></font></p>\r\n</div><br></div></div></div>', 'accu1.jpg', 'accu2.png', 'accu3.jpg', 0, 'In Stock', '2020-10-30 16:50:37', NULL),
+(24, 9, 27, 'Dabur Amla Hair Oil', 'Dabur', 180, 180, 'Stronger, Longer, Thicker Hair<div>Comes in handy bottle</div>', 'amla1.jpg', 'amla2.jpg', 'amla3.jpg', 0, 'In Stock', '2020-10-30 16:55:42', NULL),
+(25, 8, 24, 'Band-Aid', 'Johnson & Johnson', 197, 200, '<div class=\"ui-provider a b c d e f g h i j k l m n o p q r s t u v w x y z ab ac ae af ag ah ai aj ak\" dir=\"ltr\"><div style=\"font-family: &quot;Segoe UI&quot;, system-ui, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, sans-serif; font-size: 14px;\"><p style=\"margin-bottom: 0px;\"><font color=\"#000000\">- The Band Aid Flexi is an adhesive bandage made of flexible fabric<br></font></p><p style=\"margin-bottom: 0px;\"><font color=\"#000000\"><br></font></p><div><p style=\"\"><font color=\"#000000\">-&nbsp;The band aid stretches to fit better to provide continuous protection to hard to bandage areas</font></p><p style=\"\"><font color=\"#000000\">-&nbsp;It has hypoallergenic adhesive which is skin friendly and helps leave no sticky residue</font></p><p style=\"\"><font color=\"#000000\">-&nbsp;It is a ready-to-use stretchable material antiseptic bandage with non stick pad</font></p></div>\r\n</div><br></div>', 'bandaid1.jpg', 'bandaid2.jpg', 'bandaid3.jpg', 0, 'In Stock', '2020-10-30 17:01:56', NULL),
+(26, 7, 14, 'Beta Cap TR 40', 'Sun Pharmaceutical Industries', 36, 40, '<div>Hypertension (high blood pressure)</div><div>Anxiety</div><div>Arrhythmia</div><div>Prevention of Heart attack</div><div>Prevention of Angina (heart-related chest pain)</div><div>Prevention of Migraine</div>', 'beta1.jpg', 'beta2.jpg', 'beta3.jpg', 10, 'In Stock', '2020-10-30 17:10:11', NULL),
+(27, 9, 29, 'Johnson Baby Oil', 'Johnson & Johnson', 259, 299, '<div>Johnson\'s Baby oil for massage is enriched with Vitamin E</div><br>\r\n<div>Johnson\'s baby oil is formulated to spread easily on new born baby skin</div><br>\r\n<div>Dermatologically tested for allergies</div><br>\r\n<div>No Sulfates, No Parabens, No Dyes. Fragrance : Natural Aroma</div><br>', 'boil1.jpg', 'boil2.jpg', 'boil3.jpg', 0, 'In Stock', '2020-10-30 17:14:55', NULL),
+(28, 7, 30, 'Crocin', 'GSK', 30, 30, '<div style=\"box-sizing: border-box; font-family: &quot;Segoe UI&quot;, system-ui, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, sans-serif; font-size: 14px;\">CROCIN ADVANCE 500MG is used for the relief of mild to moderate pain and feverish conditions such as headache, toothache, colds, influenza, joint pain and period pains.</div>', 'crocin1.jpg', 'crocin2.jpg', 'crocin3.jpg', 10, 'In Stock', '2020-10-30 17:18:06', NULL),
+(29, 9, 18, 'Boroplus', 'Emami', 70, 70, 'Boroplus is a multipurpose cream which can be used for multiple usages like as winter cream, antiseptic cream, night cream, moisturizer, for dry lips and for cracked heels. It is popular for its deep moisturization and dryness relief in tough areas like face, hands, elbows, knees and heels. Boroplus keeps your skin healthy and glowing.<br>', 'boro1.jpg', 'boro2.jpg', 'boro3.jpg', 10, 'In Stock', '2020-10-30 17:21:48', NULL),
+(30, 9, 28, 'All-Rounder Toothbrush', 'Colgate', 20, 25, '<div>Soft curved bristles gently clean between the teeth</div><div>Compact head size reaches corners of mouth</div><div>Provides gentle cleaning for sensitive teeth and gums with silky soft bristles</div><div>Colgate is Indiaâ€™s No.1 brand used and recommended by dentists</div><div>Helps minimize pressure on gums and ensures better control while you brush</div>', 'brush1.png', 'brush2.jpg', 'brush3.png', 10, 'In Stock', '2020-10-30 17:24:05', NULL),
+(31, 9, 19, 'Bournvita', 'Cadbury', 400, 400, '<div>Cadbury is a delicious chocolate health drink which is enriched with vitamin (d, b2, b9, b12)</div><div>The combination of calcium, vitamins and minerals helps multiply the power of milk</div><div>It is a malted chocolate drink mix that can be enjoyed piping hot or deliciously cold</div><div>Ingredients: Malt Extract (44%), Sugar, Cocoa Solids, Milk Solids, Liquid Glucose, Emulsifiers (322, 471), Raising agent (500(ii)), Vitamins, Minerals, Salt. Contains Permitted natural color (150 c) and Added flavor (Artificial (Vanilla) flavoring Substances)</div>', 'bv1.jpg', 'bv2.png', 'bv3.jpeg', 0, 'In Stock', '2020-10-30 17:26:12', NULL),
+(32, 9, 18, 'Candid Dusting Powder', 'Glenmark Pharmaceutical Ltd.', 75, 80, '<div>Helps in prevention or treatment of fungal infections resulting out of sweat and moisture accumulation</div><div>Relieves itching in intimate body parts, underarms, inner thighs, waistline and feet</div><div>Soothes prickly heat on back, neck and shoulder</div><div>Relieves skin irritation caused by redness, rashes, and swelling</div>', 'candid1.jpg', 'candid2.jpg', 'candid3.jpg', 10, 'In Stock', '2020-10-30 17:27:58', NULL),
+(33, 9, 29, 'Cerelac', 'Nestle', 190, 200, '<div>The Nestle Cerelac Wheat Apple Cereal is the ideal complementary food item for babies between the age-group of 6 and 12 months. It contains 19 essential vitamins and minerals that your infant needs to grow up to be a strong individual.</div><div><br></div><div>Rich in Iron</div><div><br></div><div>This baby food provides the necessary iron that your baby needs.</div><div><br></div><div>19 Nutrients</div><div><br></div><div>This is a good source of 19 vitamins and minerals.</div><div><br></div><div>Ingredients</div><div><br></div><div>This food item contains the goodness of milk, cereal, and fruits.</div>', 'cerealac1.jpg', 'cerealac2.jpg', 'cerealac3.jpg', 0, 'In Stock', '2020-10-30 17:30:03', NULL),
+(34, 9, 28, 'Strong Teeth Toothpaste', 'Colgate', 95, 100, '<div>Colgate Strong Teeth Toothpaste with Amino Shakti</div><div>Colgate-Palmolive Company</div><div>Provides the teeth with needed calcium</div><div>Has a slightly sweet taste which makes it easier to use</div>', 'colgate1.jpg', 'colgate2.jpg', 'colgate3.jpg', 10, 'In Stock', '2020-10-30 17:32:37', NULL),
+(35, 8, 24, 'Cotton', 'Senico', 299, 340, 'Usage in commercial, clinical, hospital absorbent cotton wool is mainly used for medical purposes in hospitals, nursing homes, dispensaries. Hence the consumption of absorbent cotton wool increases with the increase in population. This material used 100 % absorbent cotton wool. Best to use for surgical use, first aid, spa, Saloon beauty, make up remover and baby or adult care.<br>', 'cotton1.jpg', 'cotton2.jpg', 'cotton3.jpg', 0, 'In Stock', '2020-10-30 17:34:18', NULL),
+(36, 9, 18, 'Dettol Liquid', 'Dettol', 150, 150, '<div>Protection from Germs and Viruses</div><div>This antiseptic liquid protects you from up to germs and viruses that can cause up to 100 illnesses.</div><div>Multipurpose Applications</div><div>This product is effective for home and personal hygiene. This is a great addition to your first-aid kit as it is effective in cleaning cuts and wounds.</div><div>Disinfectant</div><div>This product can be used to disinfect your home and items.</div>', 'dettol1.jpg', 'dettol2.jpg', 'dettol3.jpg', 0, 'In Stock', '2020-10-30 17:36:27', NULL),
+(37, 7, 30, 'Digene', 'Abbott', 18, 20, '<div>Helps to neutralize excess stomach acid</div><div>Facilitates relief in bloating, indigestion, acidity</div><div>Used in the treatment of gas and belching in the stomach</div><div>Directions For Use :</div><div>2-4 tablets as required to be chewed, or sucked after meals and at bedtime.</div>', 'digene1.png', 'digene2.jpg', 'digene3.jpg', 10, 'In Stock', '2020-10-30 17:38:04', NULL),
+(38, 7, 30, 'ENO', 'GSK', 40, 40, '<div>Provides quick relief in stomach acidity and acid reflux symptoms in just 6 seconds.</div><div>Relieves acidity, heartburn, acid reflux, nausea and gastric discomfort.</div><div>Provides temporary relief in indigestion, flatulence &amp; bloated stomach.</div><div>Does not contain lactose, gluten or preservatives.</div>', 'eno1.jpg', 'eno2.png', 'eno3.jpg', 10, 'In Stock', '2020-10-30 17:40:43', NULL),
+(39, 8, 24, 'Jelonet Gauze', 'Smith & Nephew Medical Ltd', 699, 700, 'JELONET is a proprietary dressing for wounds and burns consisting of an open gauze mesh impregnated with a soft paraffin base. JELONET is soothing and low-adherent and allows the wound to drain freely into an absorbent secondary dressing.<br>', 'gauze1.png', 'gauze2.jpg', 'gauze3.jpg', 0, 'In Stock', '2020-10-30 17:43:01', NULL),
+(40, 9, 19, 'Glucon-D', 'Glucon-D', 100, 105, '<div>Glucon D fills you with the energy required to stay active</div><div>Kick away tiredness and feel rejuvenated with Glucon-D, the preferred choice in summer when the scorching heat drains out body glucose</div><div>Country of Origin: India</div><div>Contains Calcium for bone health</div><div>It contains Vitamin C which improves the mental alertness that helps you to concentrate better while doing various daily tasks</div><div>Available in Regular as well as Delicious Lime, Orange and Mango flavours</div>', 'glud1.jpg', 'glud2.jpg', 'glud3.jpg', 10, 'In Stock', '2020-10-30 17:45:19', NULL),
+(41, 8, 20, 'Non Contact IR Infrared Thermometer 610', 'Dr Trust USA', 999, 1000, '<div>Body Temperature measurement</div><div>Fever Alarm</div><div>Accuracy</div><div>Big Screen display</div><div>Quickness</div><div>Water, Room &amp; Milk temperature measurement</div>', 'gun1.jpg', 'gun2.jpg', 'gun3.jpg', 0, 'In Stock', '2020-10-30 17:47:13', NULL),
+(42, 7, 22, 'Honitus', 'Dabur', 90, 100, '<div>Helps to relieve congestion</div><div>Effectively controls cough and throat irritation</div><div>Provides relief from sore throat</div>', 'honitus1.jpg', 'honitus2.jpg', 'honitus3.jpg', 10, 'In Stock', '2020-10-30 17:48:53', NULL),
+(43, 9, 18, 'Dettol Original Germ Protection Handwash Liquid Soap Pump', 'Dettol', 80, 100, '<div>Daily Protection: Dettol Sensitive Germ Protection Handwash Liquid Soap provides protection from a range of germs</div><div>Moisturizes: TTC &amp; Triclosan free formula with added Glycerin to moisturize skin</div><div>Healthy Skin: Contains more than 85% naturally derived ingredients and plant derived cleansers</div><div>Softly Fragrant: Dettol Sensitive handwash fragrance to keep your hands fresh all day long</div><div>Dermatologically Tested: Deeply cleanses and protects your skin from 100 illness-causing germs</div>', 'hw1.jpg', 'hw2.jpg', 'hw3.jpg', 0, 'In Stock', '2020-10-30 17:50:36', NULL),
+(44, 9, 21, 'Inhaler', 'Vicks', 49, 50, 'Provides quick relief from blocked nose<br>', 'inhaler1.jpg', 'inhaler2.jpg', 'inhaler3.jpg', 10, 'In Stock', '2020-10-30 17:52:35', NULL),
+(45, 9, 18, 'Total 10 Immunity Boosting Hand Sanitizer Bottle', 'Lifebuoy', 25, 25, '<div>Lifebuoy Antibacterial Hand Sanitizer has over 60% alcohol content and gives you instant germ protection</div><div>Lifebuoy Antibacterial Hand Sanitizer kills 99.9% bacteria and virus without water</div><div>Lifebuoy Antibacterial Hand Sanitizer has Glycerine, it leaves your skin feeling moisturised</div><div><br></div>', 'lb1.jpg', 'lb2.jpg', 'lb3.jpg', 10, 'In Stock', '2020-10-30 17:54:51', NULL),
+(46, 7, 22, 'Madhunashini Vati', 'Patanjali', 200, 210, '<div>Helps in controlling sugar content in body</div><div>Contains 120 tabs</div><div>Has no side effects</div>', 'madhunisini1.jpg', 'madhunisini2.jpg', 'madhunisini3.jpg', 0, 'In Stock', '2020-10-30 18:00:53', NULL),
+(47, 8, 24, 'Disposal Surgical Mask', 'Salus', 199, 200, 'Single Ply Non-Woven, Two Ply Non-Woven, Three Ply Non-Woven, PP Non-Woven<br>', 'mask1.jpg', 'mask2.jpg', 'mask3.jpg', 0, 'In Stock', '2020-10-30 18:02:51', NULL),
+(48, 9, 25, 'Moov', 'Moov', 249, 250, '<div>A 100 percent ayurvedic preparation for quick pain relief</div><div>Fast and long lasting relief from muscle pain, neck and backache, inflammation, sprain, myositis, fibrositis and sciatica</div><div>Fortified \"four active ingredients\" formula helps in relaxing muscle stiffness and relieving pain effectively</div><div>The special ingredients like turpentine oil, nilgiri oil, wintergreen oil and mint extract swiftly penetrate the targeted area of pain</div>', 'moov1.jpg', 'moov2.png', 'moov3.jpeg', 0, 'In Stock', '2020-10-30 18:04:48', NULL),
+(49, 7, 22, 'Divya Mukta Vati', 'Patanjali', 200, 200, '<div>- Acts as heart tonic as it provides relief from heart-related disorders and promotes normal functioning of the heart</div><div>- Cures high blood pressure or heart disease caused by the disorder of the kidneys or cholesterol, anxiety, stress or any other reason which is hereditary etc.&nbsp;</div><div>- Used for the treatment of high blood pressure</div><div>- Builds up the immune system</div>', 'mukta1.jpg', 'mukta2.jpg', 'mukta3.jpg', 0, 'In Stock', '2020-10-30 18:07:13', NULL),
+(50, 8, 20, 'Omron HEM 7120 Fully Automatic Digital Blood Pressure Monitor', 'Omron', 1590, 1600, '<div>Fully Automatic.</div><div>Personalized Inflation for Maximum Comfort.</div><div>Quick Deflation Releases Valve for Speedy Measurement.</div>', 'omron1.jpg', 'omron2.jpg', 'omron3.jpg', 0, 'In Stock', '2020-10-30 18:09:10', NULL),
+(51, 9, 25, 'ALTOS HERBAL PAINDON OIL', 'Altos', 550, 550, 'Paindon Oil is enriched with Ayurvedic herbs that removes the pain from joints and facilitates its healing. The oil has thin viscosity, which is absorbed by the affected joints and relieves from pain and inflammation. It strengthens nerves and ligaments around joints which facilitates the normal working of the joints. Benefits Gives quick relief from pain and inflammation of joints Reduces stiffness Effective on Arthritis and Muscular Atrophy<br>', 'paindon1.jpg', 'paindon2.jpeg', 'paindon3.jpeg', 0, 'In Stock', '2020-10-30 18:10:52', NULL),
+(52, 9, 28, 'Colgate Plax Fresh Mint Splash Alcohol Free Mouth Wash', 'Colgate-Palmolive Company', 49, 50, '<div>Protect your mouth from germs and get fresh breath every morning with Colgate Plax Freshmint Splash Mouthwash. Colgate Plax Freshmint Splash Mouthwash contains a freshening flavor that gives you mouth refreshment and a boost of confidence with every use.</div><div><br></div><div>Make Colgate Plax a part of your daily oral hygiene.</div>', 'plax1.jpg', 'plax2.jpg', 'plax1.jpg', 10, 'In Stock', '2020-10-30 18:13:47', NULL),
+(53, 7, 22, 'Dabur Pudin Hara Pearls', 'Dabur India', 49, 50, '<div>- Useful in the treatment of stomach ailments like acidity, gas, indigestion.</div><div>- Also, provide quick relief from stomach ache.</div><div>- The product is 100% safe and natural.</div>', 'pudin1.jpg', 'pudin2.png', 'pudin3.png', 10, 'In Stock', '2020-10-30 18:15:11', NULL),
+(54, 8, 24, 'Surgical Scissors', 'PSM', 120, 120, '<div>Material</div><div>Stainless Steel</div><div>Type</div><div>Ring Scissor</div><div>Scissor Type</div><div>Straight Dissecting Scissors</div><div>Blade Type</div><div>Sharp/Sharp Blades</div>', 'scissors1.jpg', 'scissors2.jpg', 'scissors3.jpg', 0, 'In Stock', '2020-10-30 18:16:52', NULL),
+(55, 9, 18, 'Stayfree Secure Extra Large Wings', 'Stayfree', 115, 120, 'Stayfree Secure XL Cottony Sanitary napkins with Wings with up to 12 hours of protection<br>', 'sf1.jpg', 'sf2.jpg', 'sf3.jpg', 0, 'In Stock', '2020-10-30 18:21:46', NULL),
+(56, 9, 27, 'Sunsilk Stunning Black Shine Shampoo', 'Hindustan Unilever Ltd', 95, 100, 'Give your hair a boost of life with the Sunsilk Stunning Black Shine Shampoo, that is co-created with Jamal Hammadi, a shine expert from Hollywood. The exclusive formula incorporated in this shampoo deeply nourishes your hair, leaving your tresses looking mesmerizingly shiny and beautifully moisturised throughout the day.<br>', 'sun1.jpg', 'sun2.jpg', 'sun3.png', 10, 'In Stock', '2020-10-30 18:26:16', NULL),
+(57, 9, 21, 'Vicks Vaporub', 'Vicks', 100, 110, '<div>With its unique and time-trusted formula, Vicks VapoRub gives you relief from cough and cold for 8 hours, so you and your family can sleep and dream happily</div><div>Suitable for adults and children above 2 years old</div><div>Relieves Cough, nasal congestion, body ache, headache, muscle stiffness</div>', 'vaporub1.jpg', 'vaporub2.jpg', 'vaporub3.jpg', 0, 'In Stock', '2020-10-30 18:30:29', NULL),
+(58, 9, 21, 'Vicks Cough Drops ', 'Procter & Gamble Hygiene and Health Care Ltd', 185, 200, 'Vicks Cough Drops contain Karpoor, Pudinah Ke Phool, Nilgiri Tel, Ajwain Ke Phool, and Flavoured Sugar as active ingredients. It acts as a cough suppressant and comes in ginger, honey and menthol flavors.<br>', 'vicks1.jpg', 'vicks2.jpg', 'vicks1.jpg', 0, 'In Stock', '2020-10-30 18:32:33', NULL),
+(59, 9, 25, 'Volini Maxx Spray ', 'Sun Pharmaceutical Industries Ltd', 120, 120, '<div>Provides effective relief from severe neck and back pain</div><div>Helps in relieving musculoskeletal and joint pain</div><div>Effective in healing pain due to strain and sprain</div>', 'volini1.jpg', 'volini2.png', 'volini3.jpg', 0, 'In Stock', '2020-10-30 18:35:29', NULL),
+(60, 7, 14, 'Vomikind -MD 4 Tablet', 'Mankind Pharma Ltd', 30, 35, '<div>Nausea</div><div>Vomiting</div>', 'vomikind1.jpg', 'vomikind2.jpg', 'vomikind3.jpg', 10, 'In Stock', '2020-10-30 18:37:25', NULL),
+(61, 7, 14, 'Zita-Met Plus Tablet ER', 'Glenmark Pharmaceutical Ltd.', 200, 200, 'Type 2 diabetes mellitus<br>', 'zita1.jpg', 'zita2.jpg', 'zita3.jpg', 0, 'In Stock', '2020-10-30 18:40:43', NULL),
+(62, 9, 18, 'Vwash Plus', 'Glenmark Pharmaceutical Ltd.', 180, 150, 'V Wash Plus is a expert vaginal washing liquid which maintains the pH balance of Women\'s Intimate areas, keeping it healthy.<br>', 'vw1.jpg', 'vw2.jpg', 'vw3.jpg', 0, 'In Stock', '2020-10-31 18:21:46', NULL),
+(66, 9, 19, 'ON (Optimum Nutrition) Gold Standard 100% Whey Protein', 'Optimum Nutrition, Inc', 3500, 3700, '<div style=\"box-sizing: border-box; font-family: &quot;Segoe UI&quot;, system-ui, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, sans-serif; font-size: 14px;\"><li>Optimum Nutrition Gold Standard 100% Whey Protein 5 lb is blended with whey protein isolate and ultra-filtered whey protein concentrate, that facilitates lean muscle growth.</li><li>ON Nutrition Gold Standard contains recommended 5.5 grams of naturally occurring BCAAs that speeds-up muscle recovery post strenuous workout sessions</li><li>It regulates and improves the metabolism of your body</li></div>', 'whey1.jpg', 'whey2.jpg', 'whey1.jpg', 0, 'In Stock', '2020-10-31 08:15:13', NULL),
+(67, 9, 27, 'Dove Intense Repair Conditioner', 'Dove', 100, 120, '<div>Tired of dull and damaged hair? Fret no more, as the Dove Intense Repair Conditioner is designed to prevent multiple hair-related issues by gently nourishing and strengthening your hair.</div><div><br></div><div>Innovative Fiber Actives</div><div><br></div><div>It deeply penetrates into the hair and strengthens them, reducing damage.</div><div><br></div><div>Micro Moisture Serum</div><div><br></div><div>It locks the natural moisture in your hair, thereby giving you beautiful and lustrous hair.</div><div><br></div><div>Formulated with Keratin Actives</div><div><br></div><div>Beautiful and healthy hair is just a wash away. This conditioner gently repairs the signs of damage by penetrating deep into the hair strands and provides nourished and strong hair.</div>', 'dove1.png', 'dove2.jpg', 'dove3.jpg', 10, 'In Stock', '2020-10-31 08:28:57', NULL),
+(68, 9, 29, 'Johnson Baby Powder', 'Johnson & Johnson', 225, 200, '<div>Johnson\'s baby powder absorbs excess moisture and keeps baby\'s skin comfortable and dry.</div><br>\r\n<div>Johnson\'s baby powder is dermatologist tested and hypoallergenic\r\nU.S. Pharmacopoeia grade talc to ensure it meets the highest quality and purity\r\nHighest IFRA fragrance standard</div><br>\r\n<div>No Parabens, No Sulfates, No Dye, Johnson\'s baby powder formula awakens and stimulates your baby\'s senses making your baby feel fresh and play happily with everyone</div><br>\r\n<br>', 'powder1.jpg', 'powder2.jpg', 'powder3.jpg', 0, 'In Stock', '2020-10-30 17:14:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -200,30 +216,33 @@ INSERT INTO `products` (`id`, `category`, `subCategory`, `productName`, `product
 -- Table structure for table `subcategory`
 --
 
-CREATE TABLE `subcategory` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `subcategory`;
+CREATE TABLE IF NOT EXISTS `subcategory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `categoryid` int(11) DEFAULT NULL,
   `subcategory` varchar(255) DEFAULT NULL,
-  `creationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updationDate` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `creationDate` timestamp NULL DEFAULT current_timestamp(),
+  `updationDate` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `subcategory`
 --
 
 INSERT INTO `subcategory` (`id`, `categoryid`, `subcategory`, `creationDate`, `updationDate`) VALUES
-(2, 4, 'Led Television', '2017-01-26 16:24:52', '26-01-2017 11:03:40 PM'),
-(3, 4, 'Television', '2017-01-26 16:29:09', ''),
-(4, 4, 'Mobiles', '2017-01-30 16:55:48', ''),
-(5, 4, 'Mobile Accessories', '2017-02-04 04:12:40', ''),
-(6, 4, 'Laptops', '2017-02-04 04:13:00', ''),
-(7, 4, 'Computers', '2017-02-04 04:13:27', ''),
-(8, 3, 'Comics', '2017-02-04 04:13:54', ''),
-(9, 5, 'Beds', '2017-02-04 04:36:45', ''),
-(10, 5, 'Sofas', '2017-02-04 04:37:02', ''),
-(11, 5, 'Dining Tables', '2017-02-04 04:37:51', ''),
-(12, 6, 'Men Footwears', '2017-03-10 20:12:59', '');
+(14, 7, 'Prescribed', '2020-10-30 09:02:46', NULL),
+(18, 9, 'Personal Care and Hygiene', '2020-10-30 09:08:25', NULL),
+(19, 9, 'Nutrition and Health Care', '2020-10-30 09:08:48', NULL),
+(20, 8, 'Healthcare Devices', '2020-10-30 09:11:50', '30-10-2020 02:42:00 PM'),
+(21, 9, 'Respiratory Care', '2020-10-30 09:12:48', NULL),
+(22, 7, 'Ayurveda', '2020-10-30 09:14:23', NULL),
+(24, 8, 'Surgical or other accessories', '2020-10-30 09:16:08', '02-11-2020 07:27:59 PM'),
+(25, 9, 'Bone, Joint and Muscle Care', '2020-10-30 09:17:30', '30-10-2020 02:52:02 PM'),
+(27, 9, 'Hair Care', '2020-10-30 09:17:53', NULL),
+(28, 9, 'Oral Care', '2020-10-30 09:19:38', NULL),
+(29, 9, 'Baby Care', '2020-10-30 17:13:42', NULL),
+(30, 7, 'Over-the-Counter', '2020-10-30 17:15:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -231,43 +250,29 @@ INSERT INTO `subcategory` (`id`, `categoryid`, `subcategory`, `creationDate`, `u
 -- Table structure for table `userlog`
 --
 
-CREATE TABLE `userlog` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `userlog`;
+CREATE TABLE IF NOT EXISTS `userlog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `userEmail` varchar(255) DEFAULT NULL,
   `userip` binary(16) DEFAULT NULL,
-  `loginTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `loginTime` timestamp NULL DEFAULT current_timestamp(),
   `logout` varchar(255) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `userlog`
 --
 
 INSERT INTO `userlog` (`id`, `userEmail`, `userip`, `loginTime`, `logout`, `status`) VALUES
-(1, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 11:18:50', '', 1),
-(2, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 11:29:33', '', 1),
-(3, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 11:30:11', '', 1),
-(4, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 15:00:23', '26-02-2017 11:12:06 PM', 1),
-(5, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 18:08:58', '', 0),
-(6, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 18:09:41', '', 0),
-(7, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 18:10:04', '', 0),
-(8, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 18:10:31', '', 0),
-(9, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-26 18:13:43', '', 1),
-(10, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-27 18:52:58', '', 0),
-(11, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-02-27 18:53:07', '', 1),
-(12, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-03 18:00:09', '', 0),
-(13, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-03 18:00:15', '', 1),
-(14, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-06 18:10:26', '', 1),
-(15, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-07 12:28:16', '', 1),
-(16, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-07 18:43:27', '', 1),
-(17, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-07 18:55:33', '', 1),
-(18, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-07 19:44:29', '', 1),
-(19, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-08 19:21:15', '', 1),
-(20, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-15 17:19:38', '', 1),
-(21, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-15 17:20:36', '15-03-2017 10:50:39 PM', 1),
-(22, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2017-03-16 01:13:57', '', 1),
-(23, 'hgfhgf@gmass.com', 0x3a3a3100000000000000000000000000, '2018-04-29 09:30:40', '', 1);
+(24, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2020-10-30 08:17:02', NULL, 1),
+(25, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2020-10-31 12:41:32', NULL, 1),
+(26, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2020-10-31 13:07:11', '31-10-2020 08:49:06 PM', 1),
+(27, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2020-11-01 17:28:41', '01-11-2020 11:13:13 PM', 1),
+(28, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2020-11-02 10:34:27', '02-11-2020 04:12:03 PM', 1),
+(29, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2020-11-02 13:54:33', NULL, 1),
+(30, 'anuj.lpu1@gmail.com', 0x3a3a3100000000000000000000000000, '2020-11-02 15:16:26', '02-11-2020 08:48:48 PM', 1);
 
 -- --------------------------------------------------------
 
@@ -275,32 +280,33 @@ INSERT INTO `userlog` (`id`, `userEmail`, `userip`, `loginTime`, `logout`, `stat
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `contactno` bigint(11) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `shippingAddress` longtext,
+  `shippingAddress` longtext DEFAULT NULL,
   `shippingState` varchar(255) DEFAULT NULL,
   `shippingCity` varchar(255) DEFAULT NULL,
   `shippingPincode` int(11) DEFAULT NULL,
-  `billingAddress` longtext,
+  `billingAddress` longtext DEFAULT NULL,
   `billingState` varchar(255) DEFAULT NULL,
   `billingCity` varchar(255) DEFAULT NULL,
   `billingPincode` int(11) DEFAULT NULL,
-  `regDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updationDate` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `regDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updationDate` varchar(255) DEFAULT NULL,
+  `pres` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `contactno`, `password`, `shippingAddress`, `shippingState`, `shippingCity`, `shippingPincode`, `billingAddress`, `billingState`, `billingCity`, `billingPincode`, `regDate`, `updationDate`) VALUES
-(1, 'Anuj Kumar', 'anuj.lpu1@gmail.com', 9009857868, 'f925916e2754e5e03f75dd58a5733251', 'CS New Delhi', 'New Delhi', 'Delhi', 110001, 'New Delhi', 'New Delhi', 'Delhi', 110092, '2017-02-04 19:30:50', ''),
-(2, 'Amit ', 'amit@gmail.com', 8285703355, '5c428d8875d2948607f3e3fe134d71b4', '', '', '', 0, '', '', '', 0, '2017-03-15 17:21:22', ''),
-(3, 'hg', 'hgfhgf@gmass.com', 1121312312, '827ccb0eea8a706c4c34a16891f84e7b', '', '', '', 0, '', '', '', 0, '2018-04-29 09:30:32', '');
+INSERT INTO `users` (`id`, `name`, `email`, `contactno`, `password`, `shippingAddress`, `shippingState`, `shippingCity`, `shippingPincode`, `billingAddress`, `billingState`, `billingCity`, `billingPincode`, `regDate`, `updationDate`, `pres`) VALUES
+(1, 'Anuj Kumar', 'anuj.lpu1@gmail.com', 9009857868, 'f925916e2754e5e03f75dd58a5733251', 'CS New Delhi', 'New Delhi', 'Delhi', 110001, 'New Delhi', 'New Delhi', 'Delhi', 110092, '2017-02-04 19:30:50', '', ' 2 Madhunashini');
 
 -- --------------------------------------------------------
 
@@ -308,147 +314,22 @@ INSERT INTO `users` (`id`, `name`, `email`, `contactno`, `password`, `shippingAd
 -- Table structure for table `wishlist`
 --
 
-CREATE TABLE `wishlist` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `wishlist`;
+CREATE TABLE IF NOT EXISTS `wishlist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) DEFAULT NULL,
   `productId` int(11) DEFAULT NULL,
-  `postingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `postingDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `wishlist`
 --
 
 INSERT INTO `wishlist` (`id`, `userId`, `productId`, `postingDate`) VALUES
-(1, 1, 0, '2017-02-27 18:53:17');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `ordertrackhistory`
---
-ALTER TABLE `ordertrackhistory`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `productreviews`
---
-ALTER TABLE `productreviews`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `subcategory`
---
-ALTER TABLE `subcategory`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `userlog`
---
-ALTER TABLE `userlog`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `wishlist`
---
-ALTER TABLE `wishlist`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `ordertrackhistory`
---
-ALTER TABLE `ordertrackhistory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `productreviews`
---
-ALTER TABLE `productreviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- AUTO_INCREMENT for table `subcategory`
---
-ALTER TABLE `subcategory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `userlog`
---
-ALTER TABLE `userlog`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `wishlist`
---
-ALTER TABLE `wishlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+(1, 1, 0, '2017-02-27 18:53:17'),
+(2, 1, 26, '2020-11-02 10:36:45');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
