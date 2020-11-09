@@ -131,7 +131,7 @@ return true;
 				<!-- Sign-in -->			
 <div class="col-md-6 col-sm-6 sign-in">
 	<h4 class="">Forgot password</h4>
-	<form class="register-form outer-top-xs" name="register" method="post">
+	<form class="register-form outer-top-xs" name="register" method="post" onSubmit="return valid();">
 	<span style="color:red;" >
 <?php
 echo htmlentities($_SESSION['errmsg']);
@@ -155,20 +155,17 @@ echo htmlentities($_SESSION['errmsg']="");
 
 <div class="form-group">
 	    	<label class="info-title" for="confirmpassword">Confirm Password. <span>*</span></label>
-	    	<input type="password" class="form-control unicase-form-control text-input" id="confirmpassword" name="confirmpassword" required >
+	    	<input type="password" class="form-control unicase-form-control text-input" id="confirmpassword" name="confirmpassword" required>
 	  	</div>
 
-
-		
 	  	<button type="submit" class="btn-upper btn btn-primary checkout-page-button" name="change">Change</button>
 	</form>					
-</div>
-<!-- Sign-in -->
 
+<!-- Sign-in -->
+</div>
 
 <!-- create a new account -->			</div><!-- /.row -->
 		</div>
-<?php include('includes/brands-slider.php');?>
 </div>
 </div>
 <?php include('includes/footer.php');?>

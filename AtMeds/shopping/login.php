@@ -131,6 +131,8 @@ $("#loaderIcon").hide();
 error:function (){}
 });
 }
+
+
 </script>
 
 
@@ -217,17 +219,17 @@ echo htmlentities($_SESSION['errmsg']="");
 
 <div class="form-group">
 	    	<label class="info-title" for="contactno">Contact No. <span>*</span></label>
-	    	<input type="text" class="form-control unicase-form-control text-input" id="contactno" name="contactno" maxlength="10" required >
+	    	<input type="tel" class="form-control unicase-form-control text-input" pattern="[0-9]{10}" id="contactno" name="contactno" length="10" required >
 	  	</div>
 
 <div class="form-group">
 	    	<label class="info-title" for="password">Password. <span>*</span></label>
-	    	<input type="password" class="form-control unicase-form-control text-input" id="password" name="password"  required >
+				<input type="password" class="form-control unicase-form-control text-input" id="password" name="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$" required >
 	  	</div>
 
 <div class="form-group">
 	    	<label class="info-title" for="confirmpassword">Confirm Password. <span>*</span></label>
-	    	<input type="password" class="form-control unicase-form-control text-input" id="confirmpassword" name="confirmpassword" required >
+	    	<input type="password" class="form-control unicase-form-control text-input" id="confirmpassword" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$" name="confirmpassword" required >
 	  	</div>
 
 
