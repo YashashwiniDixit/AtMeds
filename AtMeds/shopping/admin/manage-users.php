@@ -62,8 +62,6 @@ if(isset($_GET['del']))
 											<th> Name</th>
 											<th>Email </th>
 											<th>Contact no.</th>
-											<th>Shipping Address </th>
-											<th>Billing Address </th>
 											<th>Reg. Date </th>
 											<th>Action</th>
 											
@@ -82,8 +80,6 @@ while($row=mysqli_fetch_array($query))
 											<td><?php echo htmlentities($row['name']);?></td>
 											<td><?php echo htmlentities($row['email']);?></td>
 											<td> <?php echo htmlentities($row['contactno']);?></td>
-											<td><?php echo htmlentities($row['shippingAddress'].",".$row['shippingCity'].",".$row['shippingState']."-".$row['shippingPincode']);?></td>
-											<td><?php echo htmlentities($row['billingAddress'].",".$row['billingCity'].",".$row['billingState']."-".$row['billingPincode']);?></td>
 											<td><?php echo htmlentities($row['regDate']);?></td>
 											<td><a href="manage-users.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"><i class="icon-remove-sign"></i></a></td>
 											

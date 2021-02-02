@@ -51,7 +51,7 @@ exit();
 					<i class="icon-reorder shaded"></i>
 				</a>
 
-			  	<a class="brand" href="index.html">
+			  	<a class="brand" href="index.php">
 			  		AtMeds | Admin
 			  	</a>
 
@@ -59,7 +59,7 @@ exit();
 				
 					<ul class="nav pull-right">
 
-						<li><a href="http://localhost/AtMeds_/Online Shopping Portal project/shopping/index.php">
+						<li><a href="http://localhost/AtMeds_/AtMeds/shopping/index.php">
 						Back to Portal
 						
 						</a></li>
